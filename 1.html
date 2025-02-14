@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hacker Chat Bot</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: black;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 10px;
+        }
+        #chat-container {
+            width: 90%;
+            max-width: 400px;
+            height: 90vh;
+            border: 2px solid #00ff00;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            background: rgba(0, 0, 0, 0.8);
+        }
+        #chat-messages {
+            flex-grow: 1;
+            padding: 10px;
+            overflow-y: auto;
+            border-bottom: 2px solid #00ff00;
+            scrollbar-width: thin;
+            scrollbar-color: #00ff00 black;
+        }
+        .message {
+            padding: 8px;
+            border-radius: 5px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            width: 100%;
+        }
+        .user-message {
+            color: red;
+        }
+        .bot-message {
+            color: #00ff00;
+        }
+        .timestamp {
+            font-size: 10px;
+            color: gray;
+            margin-top: 3px;
+        }
+        #input-container {
+            padding: 8px;
+            display: flex;
+            gap: 5px;
+        }
+        #user-input {
+            flex-grow: 1;
+            background: black;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            padding: 8px;
+            font-size: 14px;
+            border-radius: 5px;
+        }
+        #send-button {
+            background: #00ff00;
+            border: none;
+            color: black;
+            padding: 8px 12px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        #send-button:hover {
+            background: #00cc00;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="chat-messages"></div>
+        <div id="input-container">
+            <input type="text" id="user-input" placeholder="Type..." autocomplete="off">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const qaPairs = [
+        
+
+
+   { questionGroup: ["hello", "hi", "hey", "greetings", "hola"], answer: "Hello, user. How can I assist you today?" },
+   { questionGroup: ["how are you", "whats up", "are you fine", " are u good", "how is every thing"], answer: "great, thanks for asking. How can I assist you today?" },
+   { questionGroup: ["what is your purpose", "what is your use", "your use", "your purpose", "what are you", "who are you"], answer: "I am designed to provide information and assistance." },
+  { questionGroup: ["good day", "good morning", "good evening", "good afternoon", "good night"], answer: "Have a wonderful time! user." },
+  { questionGroup: ["bye bye", "bye", "good bye", "see you", "see you soon "], answer: "roger! would try to be more reliable source of information." },
+
+
+
+
+
+ { questionGroup: ["who made you", "who developed you", "where you come from", "what is your origin", "who programmed you","who coded you"], answer: "Hello, user. i am designed and programmed by @ Ghost I.D copyrighted productions " },
+{ questionGroup: ["who is ghost", "who ghost is", "what is ghost", "ghost?", "explain ghost"], answer: "Developer likes to Stay in shadows!" },
+
+
+
+
+
+ { questionGroup: ["kudu", "what is kudu", "kudu brand", "what id kudu brand", "what is kudu company","kudu founded","kudu history"], answer: "Kudu (Arabic: كودو Kūdū) is a fast food chain in Saudi Arabia. It was established in 1988, and has 316 locations in Saudi Arabia and Bahrain with more than 5,000 employees. The first branch opened in Riyadh on 16 April 1988 on 30th street. Kudu serves burgers and sandwiches, which are popular with Saudis, but its specialty is sandwiches. It serves breakfast as well, with some Western-style menu items including waffles.<br>KUDU is the name of an animal which was imported in English dictionary in the 18th century which mean it is a young African deer. The first KUDU restaurant opened in Riyadh, on April 16th1988. During the following 4 years, 7 more locations were added in Riyadh. In 1992, first restaurant outside of Riyadh opened in Jeddah. In 1993, expansion continued in the Eastern province of KSA. During the following years, KUDU has expanded its outlet to cover Abha, Tabuk, Taif, Madinah, and the central province.  In 2004, KUDU has ventured the franchise system and opened franchise outlets inside and outside the kingdom.  In 2005, KUDU signed a franchise agreement to open its second outlet in Sudan.  In 2008, KUDU franchise had opened 2 branches in Jordan. Expansion occurred outside of the Kingdom of Saudi Arabia into other countries in the Gulf region.  In April 2015, Abraaj completed a buyout of KUDU Company for Food and Catering (‘KUDU’) through one of its Funds and in a partnership with TPG Capital (TPG)." },
+
+
+
+
+
+{ questionGroup: ["core values of kudu","core values kudu","what are core values of kudu","core values"], answer: "teamwork,integrity,excellence and customer first" },
+
+{ questionGroup: ["brand message","what is the brand messange","what is the message of the brand"], answer: "taste you can see,bridge the gap between what kudu stands for and young generation." },
+
+{ questionGroup: ["kudu vision","vision of kudu","what is the visison of kudu","vision of the brand"], answer: "to be saudi's leading restaurant company, food everyone loves to eat." },
+
+{ questionGroup: ["kudu mission","mission of kudu", "what is the mission of kudu", "kudu mission", "what's kudu's mission", "kudu's mission statement"], answer: "A people-focused company serving great food and providing a unique guest experience through flawless execution." },
+
+{ questionGroup: ["operations mission of kudu", " the operations mission of kudu", "operations mission", "what's kudu's operations mission", "kudu's operations mission statement"], answer: "run great restaurantsthrough unparalleled operational excellence by providing an exceptional guest experience through ispired well trained, motivated people functiioning at their optimum potential ." },
+
+{ questionGroup: ["pppppp", "what is 6p", "what is pppppp", "do you know pppppp?", "explain ghost"], answer: "prior proper planning prevent poor performance" },
+
+
+{
+  "questionGroup": [
+    "engage",
+    "what is engage",
+    "what is the full form of engage",
+    "what does engage stand for"
+  ],
+  "answer": "Embrace - Act of accepting and supporting new operations platforms & directions.<br>" +
+            "No Nonsense - Don’t accept excuses for low performance, if you accept it, you will fail before you even start!<br>" +
+            "Get Ready - Setup yourself & your team for success, spending 1 minute in planning, will save 4 minutes at execution.<br>" +
+            "Align Your Team - Organize your team and share the goals, plans & purpose with them. You can't do it alone!<br>" +
+            "Get It Done - Determination to win is the key for perfect execution. Don’t accept the good, only EXCELLENT!<br>" +
+            "Evolve - Monitor achieved results, and anticipate for tomorrow, keep sharpening your team and EVOLVE! Today's goals & plans, are not enough for tomorrow."
+},
+{
+  "questionGroup": [
+    "Front counter service steps",
+    "fc service steps",
+    "service steps for front counter",
+    "fc 5 steps of service"
+  ],
+  "answer": "1) Promptly Welcome the Guest - Smile, Eye Contact, Greet, Ask the guest if they wish to have it eat in: 'Will you be dining with us today, sir/madam?'<br>" +
+            "2) Clearly Take the Order - Pay attention and listen carefully, If needed, clarify the order, tell guest about any extra cost, Apply suggestive selling when appropriate by asking one best question, Repeat the order, Total the order.<br>" +
+            "3) Collect Payment Accurately - Politely inform the guest of the total of the order, Count back the change and hand over the receipt, Thank the guest.<br>" +
+            "4) Assemble the Order Correctly - Fill the order quickly and get it right, If there is a delay in production, inform guests about it.<br>" +
+            "5) Deliver the Order Politely - Check the order is correct and complete, If the guest is seating at dining, deliver the food to them politely, As appropriate, offer condiments, napkins, and straws, Smile, thank the guest, and invite the guest to return."
+},
+
+{
+  "questionGroup": [
+    "kudu abbreviations",
+    "kudu terminology",
+    "abbreviations used in Kudu",
+    "terms to know",
+    "kudu abbreviations and terminology"
+  ],
+  "answer": "AC - Average Check (average money guests spend in each transaction in restaurant)<br>" +
+            "ADS - Average Daily Sales (for each restaurant)<br>" +
+            "AFSM - Advanced Food Safety Management Course<br>" +
+            "AMDP - Area Manager Development Program<br>" +
+            "BOGO - Buy One Get One (Free)<br>" +
+            "BOH - Back of House<br>" +
+            "CCP - Critical Control Point<br>" +
+            "CCTV - Closed Circuit Television<br>" +
+            "CER - Cares Excellence Review<br>" +
+            "CFS - Critical Food Safety<br>" +
+            "Comp. Sales - Sales for a restaurant comparing the same period this year and last year<br>" +
+            "Daypart - A distinguishable period (i.e. breakfast, lunch or dinner)<br>" +
+            "DT - Drive Thru<br>" +
+            "E2E - Excellence To Experience (system coaching visit)<br>" +
+            "EBITDA - Earnings Before Interest, Tax, Depreciation and Amortization<br>" +
+            "ESM - Effective Shift Management Course<br>" +
+            "FC - Front Counter<br>" +
+            "FCR - Food Court Restaurant<br>" +
+            "FEFO - First Expired First Out<br>" +
+            "FIFO - First In First Out<br>" +
+            "FOH - Front Of House<br>" +
+            "FS - Free Stand (refers to restaurant type)<br>" +
+            "FS&PQ - Food Safety & Product Quality Course<br>" +
+            "FS/DT - Free Stand/Drive Thru (refers to restaurant type)<br>" +
+            "G&A - General and Administrative Expenses<br>" +
+            "GP - Gross Profit<br>" +
+            "HACCP - Hazard Analysis Critical Control Point<br>" +
+            "HVAC - Heating, Ventilation & Air Conditioning System<br>" +
+            "IL - In-Line Restaurant (refers to restaurant type)<br>" +
+            "IL/DT - In-Line Restaurant/Drive Thru (refers to restaurant type)<br>" +
+            "ISP - In Store Process<br>" +
+            "KDS - Kitchen Display System<br>" +
+            "KPI - Key Performance Indicator<br>" +
+            "KRBP - KUDU Restaurant Business Plan<br>" +
+            "LFL - Like For Like (sales comparison)<br>" +
+            "LSM - Local Store Marketing<br>" +
+            "LTO - Limited Time Offer<br>" +
+            "MBO - Management by Objectives<br>" +
+            "MSDS - Material Safety Data Sheet (describes each chemical type)<br>" +
+            "MTD - Month To Date sales accumulation<br>" +
+            "OCU - Order Confirmation Unit<br>" +
+            "Oz. - Ounce<br>" +
+            "P&L - Profit and Loss Statement<br>" +
+            "PA - Performance Appraisal<br>" +
+            "PD - Pull – Discard<br>" +
+            "PEM - Promotion Execution Manual<br>" +
+            "PHF - Potentially Hazardous Food<br>" +
+            "PHU - Product Holding Unit<br>" +
+            "PLS - Product Level System<br>" +
+            "POP - Point Of Purchase (merchandising tools)<br>" +
+            "POS - Point Of Sale<br>" +
+            "PPE - Personal Protective Equipment<br>" +
+            "PPM - Part Per Million<br>" +
+            "PTD - Pull - Temper/Thaw - Discard<br>" +
+            "QA - Quality Assurance<br>" +
+            "QSC - Quality, Service & Cleanliness<br>" +
+            "QSR - Quick Service Restaurants<br>" +
+            "R&D - Research & Development<br>" +
+            "R&M - Repair & Maintenance<br>" +
+            "RCP - Restaurant Controllable Profit<br>" +
+            "ROI - Return on Investment<br>" +
+            "S2S - Shoulder To Shoulder (personal coaching visit)<br>" +
+            "SOC - Standard Observation Checklist<br>" +
+            "SOP - Standard Operation Procedure<br>" +
+            "SOS - Speed Of Service<br>" +
+            "SWOT - Strengths, Weaknesses, Opportunities, Threats<br>" +
+            "TC - Number of transactions in your restaurant<br>" +
+            "TE - Training Evaluation Visit<br>" +
+            "TNA - Training Needs Analysis<br>" +
+            "U/1000 - Unit per 1000 sales (for order calculations formula)<br>" +
+            "UOM - Unit Of Measure<br>" +
+            "WRG - Work Right Guide Chart (training tool)<br>" +
+            "WRS - Wash - Rinse - Sanitize<br>" +
+            "YTD - Year To Date sales accumulation"
+},
+
+{
+  "questionGroup": [
+    "how to control the shift",
+    "shift controlling",
+    "shift control and execution",
+    "what is shift controlling",
+    "shift control"
+  ],
+  "answer": " Brief your team about the shift plan<br>" +
+            " Ensure enough stocks (Food, wrap, Prep, etc.)<br>" +
+            " Travel path (FOH & BOH)<br>" +
+            " Communicate sides/promo targets to cashiers<br>" +
+            " Assign staff<br>" +
+            " Check Equipment temp. and functioning<br>" +
+            " Enough supplies<br>" +
+            " Enough change<br>" +
+            " WRS and handwashing before the peak (all Staff)<br>" +
+            " Praise & Energize your team<br>" +
+            " Interact with your guests<br>" +
+            " Coach your team<br>" +
+            " Quick travel path (Din-in, CR, etc.)<br>" +
+            " Monitor SOS<br>" +
+            " Pick a KUDU Chicken sandwich for conformance check<br>" +
+            " Give a quick, specific feedback to your team<br>" +
+            " Appreciate your team efforts<br>" +
+            " Ask your team to re-stock the workstations<br>" +
+            " Check the supplies<br>" +
+            " Check shift plan output<br>" +
+            " Travel path (FOH & BOF)<br>" +
+            " Follow up the WRS and hand washing<br>" +
+            " Brief your team, explain what went right and what could be better next peak"
+},
+
+
+{
+  "questionGroup": [
+    "what is food safety?",
+    "food safety",
+    "what do you know about food safety?",
+    "what are the types of food safety contamination?",
+    "explain food safety contaminants"
+  ],
+  "answer": "Food Safety is making food safe to eat and free of disease-causing agents, such as:<br>" +
+            "<ul>" +
+            "<li><strong>Micro-organisms:</strong><br>Very small, not visible to the naked eye. Examples include Bacteria, viruses, fungi, etc.</li>" +
+            "<li><strong>Chemical:</strong><br>Occurs when food comes into contact with chemicals that can cause chemical food poisoning. Common causes of chemical contamination include:</li>" +
+            "<ul>" +
+            "<li>Cleaning agents</li>" +
+            "<li>Unwashed vegetables & fruits</li>" +
+            "<li>Food containers made from non-safe plastics</li>" +
+            "<li>Pest control items such as fly spray or rat poison</li>" +
+            "<li>Chemicals used in food processing</li>" +
+            "</ul>" +
+            "<li><strong>Physical:</strong><br>Physical contamination refers to food being contaminated by physical objects. Common causes of physical contamination include:</li>" +
+            "<ul>" +
+            "<li>Hair</li>" +
+            "<li>Glass or metals</li>" +
+            "<li>Jewelry</li>" +
+            "<li>Dirt</li>" +
+            "<li>Pests (flies, cockroaches)</li>" +
+            "<li>Fake nails</li>" +
+            "<li>Paper, clips, pencils</li>" +
+            "</ul>" +
+            "</ul>"
+},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+];
+
+        function findBestAnswer(question) {
+            const found = qaPairs.find(pair => pair.questionGroup.includes(question.toLowerCase()));
+            return found ? found.answer : "Response not found. Please rephrase your question.";
+        }
+
+        function addMessage(message, isUser = true) {
+            const chatMessages = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            const timestamp = new Date().toLocaleTimeString();
+
+            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            messageDiv.innerHTML = `<span>> ${message}</span><span class="timestamp">${timestamp}</span>`;
+
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function handleUserInput() {
+            const userInput = document.getElementById('user-input');
+            const message = userInput.value.trim();
+            
+            if (message) {
+                addMessage(message, true);
+                setTimeout(() => addMessage(findBestAnswer(message), false), 500);
+                userInput.value = '';
+            }
+        }
+
+        document.getElementById('send-button').addEventListener('click', handleUserInput);
+        document.getElementById('user-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleUserInput();
+        });
+
+        setTimeout(() => addMessage("System initialized... Ready for queries", false), 1000);
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
